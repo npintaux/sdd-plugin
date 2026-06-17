@@ -25,8 +25,12 @@ Turn product intent (the PRD) into a drafted backlog in GitHub. This is an **int
 - This skill **never** writes `SPEC.md` or code. Intent is born in GitHub (PO); its technical form is born in the repo (engineering) and owned there.
 - Acceptance criteria stay at product altitude; the engineering team translates them into `SPEC.md`.
 
-## Output
-A set of draft GitHub Issues (with acceptance criteria, cycle tags, PRD link) ready for the PO to review and publish.
+## Verification
+Before exiting this skill, you MUST verify the following:
+- [ ] You have successfully used the `github` MCP server to create the issues.
+- [ ] Each issue includes the acceptance criteria from the PRD.
+- [ ] Each issue has the appropriate `cycle-*` label applied.
+- [ ] A link to the PRD is included in the description of every issue.
 
 ## Example
 `/create-stories` on the Approval Engine PRD → drafts US1–US7 (US1–US3 `cycle-1`, US4–US5 `cycle-2`, US6–US7 `cycle-3`), each with acceptance criteria, as GitHub Issues.
