@@ -1,6 +1,6 @@
 # Antigravity Skills — Spec-Driven Development harness
 
-A small catalog of **CLI-invocable skills** that standardize *how* code is written, validated, tested and shipped on an agent-first workflow with [Antigravity](https://antigravity.google). They are the **platform harness** behind a Spec-Driven Development (SDD) lab built around a sample application, the **Approval Engine**.
+A small catalog of **CLI-invocable skills** that standardize *how* code is written, validated, tested, and shipped on an agent-first workflow with [Antigravity](https://antigravity.google). They are the **platform harness** behind a Spec-Driven Development (SDD) lab built around a sample application, the **Barista Agent**.
 
 The guiding principle:
 
@@ -17,9 +17,9 @@ Skills are grouped **by persona** to keep the responsibility line visible. The f
 |---|---|---|---|
 | `/implement` | TDD (tests from the acceptance criteria) → OO code → docstrings, to green | Engineering · repo `.agents/` | gate: `pylint` · `pytest` · coverage ≥ 90% |
 | `/code-review` | Checklist: OO design, one class/file, docstrings, no dead code | Engineering | advisory — no hard gate |
-| `/commit` | Conventional message linked to the Jira story + the rule (`[Rn]`) | Engineering | gate: pre-commit hook (`pylint` · `pytest` · `Trivy`) |
-| `/read-user-story` | Pull the Jira story, extract acceptance criteria → `SPEC.md` + tests | Engineering | tool: Atlassian MCP |
-| `/create-stories` | From the PRD, draft stories + acceptance criteria as Jira drafts, by cycle | **Product Owner** · own context (off-repo) | tool: Atlassian MCP · PO publishes |
+| `/commit` | Conventional message linked to the GitHub Issue + the rule (`[Rn]`) | Engineering | gate: pre-commit hook (`pylint` · `pytest` · `Trivy`) |
+| `/specify` | Pull the GitHub Issue, extract acceptance criteria → `SPEC.md` + tests | Engineering | tool: GitHub MCP |
+| `/prd-to-backlog` | From the PRD, draft stories + acceptance criteria as GitHub Issues drafts | **Product Owner** · own context (off-repo) | tool: GitHub MCP · PO publishes |
 
 Each skill is a single `SKILL.md`-style markdown file with `name` / `description` frontmatter (the description drives triggering) and a body describing when to use it, the procedure, conventions, gates and examples.
 
@@ -44,25 +44,25 @@ Each skill is a single `SKILL.md`-style markdown file with `name` / `description
 
 ## Traceability — the `/commit` convention
 
-`/commit` links every change to two anchors: the **Jira story key** (e.g. `APPR-124`) and the **rule** it implements (e.g. `[R4]`):
+`/commit` links every change to two anchors: the **GitHub Issue number** (e.g. `#124`) and the **rule** it implements (e.g. `[R4]`):
 
 ```
-type(scope): summary [Rn] (APPR-xxx)
+type(scope): summary [Rn] (#xxx)
 ```
 
 ```
-feat(rules): contractor requests always REVIEW [R4] (APPR-124)
-feat(schema): Decision carries policy_version + evaluated_at (APPR-126)
+feat(rules): allergen safety always triggers SUBSTITUTE or REFUSE [R4] (#124)
+feat(schema): Decision carries price + policy_version + evaluated_at (#126)
 ```
 
-This yields end-to-end traceability **story ↔ commit ↔ rule ↔ runtime**. Each `Decision` returned by the engine carries a `rule_ids` field, so an auditor can start from a production `REVIEW`, read `rule_ids=["R4"]`, find the `[R4]` commit, then the story and the PRD that motivated it.
+This yields end-to-end traceability **story ↔ commit ↔ rule ↔ runtime**. Each `Decision` returned by the engine carries a `rule_ids` field, so an auditor can start from a production `REFUSE`, read `rule_ids=["R4"]`, find the `[R4]` commit, then the story and the PRD that motivated it.
 
-| `evaluate(request)` | outcome | `rule_ids` |
+| `take_order(request)` | action | `rule_ids` |
 |---|---|---|
-| `amount=80, office, employee` | APPROVE | `["R1"]` |
-| `amount=1500, office, employee` | REJECT | `["R2"]` |
-| `amount=50, office, contractor` | REVIEW | `["R4"]` |
-| `amount=400, travel, employee` | REVIEW | `["R3"]` |
+| `medium oat latte` | MAKE | `["R1"]` |
+| `latte` (no size) | ASK | `["R2"]` |
+| `hazelnut latte` (nut allergy) | REFUSE | `["R4"]` |
+| `unicorn frappe` | REFUSE | `["R3"]` |
 
 ---
 
@@ -76,8 +76,8 @@ The engineering skills are meant to live under the repo's agent config; the PO s
 ├── implement.md          # /implement
 ├── code-review.md        # /code-review
 ├── commit.md             # /commit
-├── read-user-story.md    # /read-user-story
-└── create-stories.md     # /create-stories   (Product Owner — off-repo in practice)
+├── specify.md            # /specify
+└── prd-to-backlog.md     # /prd-to-backlog   (Product Owner — off-repo in practice)
 ```
 
 When wired into a project, the engineering skills sit under `.agents/skills/`, with `AGENTS.md` acting as a thin **router** that points to them and to the always-on convention files (`.agents/conventions/style.md`, `architecture.md`). *(Those convention/router files are not in this repo yet.)*
@@ -91,7 +91,7 @@ This plugin ships its hook wiring in [`hooks.json`](hooks.json) at the plugin ro
 - Python 3.13, **one class per file**, complete docstrings, explicit type hints.
 - Object-oriented but Pythonic: dataclasses for data, `Protocol` for interfaces, **composition over inheritance** — no deep inheritance trees.
 - Pure functions: no I/O, no network, deterministic (the only time-dependent value is the recorded `evaluated_at`).
-- `SPEC.md` is the source of truth for behavior; a Jira story is **intake** only. The agent reads Jira but obeys `SPEC.md`.
+- `SPEC.md` is the source of truth for behavior; a GitHub Issue is **intake** only. The agent reads GitHub but obeys `SPEC.md`.
 
 ---
 
@@ -100,12 +100,12 @@ This plugin ships its hook wiring in [`hooks.json`](hooks.json) at the plugin ro
 Invoke a skill by name from the Antigravity CLI, e.g.:
 
 ```
-/read-user-story APPR-124
-/implement APPR-124
+/specify #124
+/implement #124
 /commit
 ```
 
-> ⚠️ **Version note.** Antigravity launched at Google I/O 2026. The exact `SKILL.md` frontmatter schema, the `.agents/` layout, the hook event names, and the Atlassian MCP setup are platform-specific and may be newer than general references. **Confirm them against the current docs at `antigravity.google/docs` before relying on them.**
+> ⚠️ **Version note.** Antigravity launched at Google I/O 2026. The exact `SKILL.md` frontmatter schema, the `.agents/` layout, the hook event names, and the GitHub MCP setup are platform-specific and may be newer than general references. **Confirm them against the current docs at `antigravity.google/docs` before relying on them.**
 
 ---
 
@@ -115,5 +115,5 @@ These skills are the harness for an SDD lab. The companion deliverables (separat
 
 - **"Getting the most from code assistants"** — the reference deck.
 - **SDD Workshop Deck** and **SDD Workshop Guide** — the hands-on lab.
-- **Approval Engine PRD** — the product definition of the sample app.
-- **Lab Environment Setup Guide** — how to prepare an individual Google Cloud / GitHub / Jira / Artifact Registry environment.
+- **Barista Agent PRD** — the product definition of the sample app.
+- **Lab Environment Setup Guide** — how to prepare an individual Google Cloud / GitHub / Artifact Registry environment.
