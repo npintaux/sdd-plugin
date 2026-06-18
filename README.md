@@ -80,7 +80,9 @@ The engineering skills are meant to live under the repo's agent config; the PO s
 └── create-stories.md     # /create-stories   (Product Owner — off-repo in practice)
 ```
 
-When wired into a project, the engineering skills sit under `.agents/skills/`, with `AGENTS.md` acting as a thin **router** that points to them and to the always-on convention files (`.agents/conventions/style.md`, `architecture.md`). The hooks live in `.agents/hooks.json`. *(Those companion files are not in this repo yet.)*
+When wired into a project, the engineering skills sit under `.agents/skills/`, with `AGENTS.md` acting as a thin **router** that points to them and to the always-on convention files (`.agents/conventions/style.md`, `architecture.md`). *(Those convention/router files are not in this repo yet.)*
+
+This plugin ships its hook wiring in [`hooks.json`](hooks.json) at the plugin root (plugin form — event map wrapped in `{"hooks": {…}}`). A consuming project may instead place an equivalent file at `.agents/hooks.json`. The `pre-specify` gate is wired to `UserPromptExpansion` (so it fires when `/specify` is typed) and `post-specify` to `PostToolUse`. **The exact event names, the tool-call matcher, and the plugin script-path base are platform-specific — confirm them against `antigravity.google/docs/hooks` before relying on this wiring.**
 
 ---
 
