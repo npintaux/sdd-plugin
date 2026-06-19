@@ -102,16 +102,19 @@ A single `PreToolUse`/`run_command` hook is wired to an **entry script that disp
 
 ```
 scripts/
-├── pre-tool-use.sh     # entry (hooks.json → here): reads the tool call, routes by action
-├── lib/hook-io.sh      # shared: hook_allow / hook_deny (build the JSON decision via jq)
-└── gates/commit-gate.sh# the git-commit policy
+├── pre-tool-use.sh      # entry (hooks.json → here): reads the tool call, routes by action
+├── lib/hook-io.sh       # shared: hook_allow / hook_deny (build the JSON decision via jq)
+└── gates/
+    ├── commit-gate.sh   # the git-commit policy
+    └── specify-gate.sh  # the /specify branch-cut policy
 ```
 
 | Action detected | Gate | Imposes (deny) |
 |---|---|---|
 | `git commit` | `gates/commit-gate.sh` | the commit is on an `issue/<n>-<title>` branch; `SPEC.md` + the layout contract (`code-layout.md`/`code-layout.env`) exist; every rule file has a matching test; the pure core does not import the I/O shell |
+| `git checkout -b issue/…` / `switch -c issue/…` / `branch issue/…` (the /specify "cut") | `gates/specify-gate.sh` | you are on `main`/`master`; the tree has no uncommitted **tracked** changes (the untracked `SPEC.md` draft is allowed); `main` is in sync with its upstream (a best-effort `git fetch` first; never blocks on network/auth) |
 
-To add a new pre-hook behavior: detect the action in `pre-tool-use.sh` and `exec` a new `gates/<name>.sh`. Gates read the project's `code-layout.env`, so they carry no project-specific path; everything **fails open** (allows) on errors, so a hook bug never blocks normal work. The command path in `hooks.json` is **absolute** (Antigravity provides no plugin-root variable); the entry script then locates its own `lib/` and `gates/` relative to itself. Hooks are written in **bash + `jq`** for demo readability.
+There is **no "fires when `/specify` is typed" event** in Antigravity, so the "start from a clean, up-to-date main" rule is enforced at the moment `/specify` *cuts the issue branch* — which is the load-bearing instant anyway (it guarantees the branch is based on the latest `main`). To add a new pre-hook behavior: detect the action in `pre-tool-use.sh` and `exec` a new `gates/<name>.sh`. Gates read the project's `code-layout.env`, so they carry no project-specific path; everything **fails open** (allows) on errors, so a hook bug never blocks normal work. The command path in `hooks.json` is **absolute** (Antigravity provides no plugin-root variable); the entry script then locates its own `lib/` and `gates/` relative to itself. Hooks are written in **bash + `jq`** for demo readability.
 
 **Event names, matcher semantics, and the stdin/stdout contract are platform-specific — confirm them against `antigravity.google/docs/hooks` and a known-good reference plugin before relying on this wiring.**
 

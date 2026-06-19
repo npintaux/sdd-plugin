@@ -47,10 +47,23 @@ is_git_commit() {
   return 1
 }
 
+# Is this command CREATING an issue/ branch (the /specify "cut" step)?
+# Matches `git checkout -b issue/…`, `git switch -c issue/…`, `git branch issue/…`.
+# Commits are dispatched first (below), so a commit message mentioning a branch
+# never lands here.
+creates_issue_branch() {
+  [[ "$1" =~ (checkout[[:space:]]+-b|switch[[:space:]]+-c|branch)[[:space:]]+issue/ ]]
+}
+
 # --- 4. Dispatch -------------------------------------------------------------
 # `exec` hands over the process so the gate's STDOUT becomes the hook's STDOUT.
+# Order matters: test commit first, so a commit whose message mentions a branch
+# is routed to the commit gate, not the specify gate.
 if is_git_commit "$cmd"; then
   exec bash "$HERE/gates/commit-gate.sh" "$cwd"
+fi
+if creates_issue_branch "$cmd"; then
+  exec bash "$HERE/gates/specify-gate.sh" "$cwd"
 fi
 
 # Not an action we gate.
