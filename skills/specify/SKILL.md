@@ -10,6 +10,19 @@ Bring intent **in** from GitHub and turn it into the artifacts engineering actua
 ## When to use
 - Starting a cycle or a task from a GitHub Issue.
 
+## Inputs — and ONLY these (keep the context tight)
+`/specify` produces one file, `SPEC.md`. To do that it needs exactly three inputs:
+1. the **GitHub Issue** (via the `github` MCP) — the intake;
+2. **`templates/SPEC.template.md`** (this skill's own template) — the required shape;
+3. the **current `SPEC.md`**, *only if it already exists* — to edit in place and assign the next rule id.
+
+**Do not read the rest of the repository to "understand" it.** Reading unrelated files wastes tokens and risks importing scope that is not in the Issue. In particular do **not** open:
+- `docs/PRD.md` — the Product Owner's artifact; your intake is the **Issue**, not the PRD;
+- `.agents/conventions/code-layout.*`, `pyproject.toml`, `src/`, `AGENTS.md` — these are about *where code goes* and are `/implement`'s concern, irrelevant to a behavioral spec;
+- `docs/SPEC.example.md` or any sample — illustrative only. **Derive the spec from the Issue**; never copy an example.
+
+If you catch yourself listing or reading files beyond the three inputs above, stop — you have what you need.
+
 ## Tool
 - **GitHub MCP server** (`github`) — used to fetch the issue and, after approval, update its state/labels. The agent decides which ticket is relevant, so a connector (not a hard-coded call) is appropriate.
 
