@@ -37,7 +37,11 @@ Turn **one** item of intent (an acceptance criterion in `SPEC.md`, itself derive
    - a **`Rule` ABC** (`abc.ABC` + an `@abstractmethod`, e.g. `evaluate(...) -> Decision | None`; `None` = "this rule does not apply"); **one rule class per file**, each **subclassing `Rule`**. Use an **ABC, not a bare `Protocol`** — the ABC is what lets the **engine enforce the contract**: a rule that omits the method cannot be instantiated.
    - **Wire the rule into the engine.** `engine.py` is a **first-class artifact**, not an afterthought: it holds the rule instances in an **ordered list at the SPEC's precedence** and exposes the **entry point the SPEC names**, calling each `rule.evaluate(...)` and returning the first non-`None` `Decision`. Implementing a rule **includes registering its instance in that ordered list at the correct rank**. Build the engine as a **walking skeleton from the very first rule** so the system is callable end-to-end at all times; until the SPEC's catch-all rule lands, the engine raises a clear error when no rule applies.
    - **composition over inheritance**; full type hints; pure functions in the core (no I/O, no network, deterministic).
-   - **Do not silence the linter for rule classes.** A single-method rule class is intentional here — **never** add `# pylint: disable=too-few-public-methods` per file; the project's pylint config allows small rule classes centrally (once).
+   - **Lint: fix the config once, never the file.** A single-method rule class is intentional. If `pylint` flags `too-few-public-methods`, the **one** correct fix is a **single central** disable in the project's pylint config — add it **once** if it is missing (do not duplicate it; do not add a per-file `# pylint: disable=...` to any rule). In `pyproject.toml`:
+     ```toml
+     [tool.pylint."messages control"]
+     disable = ["too-few-public-methods"]  # rule classes are intentionally single-method
+     ```
 5. **Docstrings** on every public module, class and function.
 6. **Run to green** — implement until the derived tests pass; refactor while keeping green.
 7. **Confirm the gates pass** (see below).
