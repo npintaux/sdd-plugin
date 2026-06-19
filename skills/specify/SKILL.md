@@ -35,22 +35,22 @@ If you catch yourself listing or reading files beyond the three inputs above, st
 1. **Fetch** the story by number (e.g. `#124`) via the `github` MCP server.
 2. **Evaluate quality**: The story must have (a) an explicit acceptance-criteria section, and (b) at least one outcome stated in testable terms (a concrete input → expected result). If either is missing, or the story is otherwise unimplementable, **stop**: comment on the issue requesting clarification and tell the user. Do **not** scaffold, edit, branch, or label. Resume from step 1 once the story is updated.
 3. **Extract** the acceptance criteria and any constraints; restate them as a checklist in your own words.
-4. **Draft the `SPEC.md` change** (no commit yet):
-   - **If `SPEC.md` does not exist** (first story), scaffold it from [templates/SPEC.template.md](templates/SPEC.template.md), then add the first rule(s).
-   - **If it exists**, edit in place.
+4. **Draft the proposed `SPEC.md` — as a review artifact, NOT in the repo yet** (no repo write, no branch, no commit):
+   - Deliver the draft as a **reviewable artifact** (your platform's artifact mechanism). **Do not write the repository's `SPEC.md`** at this stage — the working tree must stay untouched until you have approval, so the default branch is never polluted by an unapproved draft. The repo is written only at step 7, after approval, on the issue branch.
+   - **If `SPEC.md` does not exist** (first story), base the draft on [templates/SPEC.template.md](templates/SPEC.template.md) and add the first rule(s). **If it exists**, base the draft on the current `SPEC.md` and show the proposed change.
    - Assign each new rule the **next sequential `rule_id`** (`R1`, `R2`, …); never reuse or renumber existing IDs. Do **not** treat the GitHub prose as canonical — the spec is.
    - **Keep the spec self-sufficient.** `/implement` reads only `SPEC.md`, never the issue. So if a rule introduces a new `Request` field, a new `outcome` value, a new global invariant, or a new term, update the **Domain model**, **Global constraints**, **Precedence order**, and **Glossary** in the *same* edit. A reader must be able to implement the rule from `SPEC.md` alone; the `Source: issue #` link is for traceability (the *why*), not a required input.
    - **Stay strictly within THIS issue's criteria.** Model only what the acceptance criteria require — add no `Request`/`Decision` field, `outcome`, rule, or invariant borrowed from *another* story (a serialization/format schema, a pricing/total, an extra risk or safety dimension, and the like each belong to their own story). When tempted, leave it out and note the omission at review. Prefer the simplest model that satisfies the criteria, and keep lookup/reference data as an *external reference* the engine consults — do not hard-code concrete data tables into the spec.
 5. **Map to tests**: List the test cases the criteria imply, including edge/precedence cases and the expected `outcome` and `rule_ids`. These are presented at review and carried forward to `/implement`; this skill does not persist them.
-6. **Request review (STOP)**: You have already written `SPEC.md` to disk. Present a **concise** review — one line per rule, the key modeling/scope decisions (and anything you deliberately left out of scope), and the implied test list — then point the user to `SPEC.md` for the full text. **Do not paste the entire file back into the chat**: it is on disk and re-pasting it wastes tokens. **Stop execution and wait for explicit approval.** If the user requests changes, return to step 4. Do not branch, commit, or touch issue state until approved.
-7. **Commit on a branch** (only after approval): Create and check out `issue/<number>-<short-kebab-case-title>` (e.g. `git checkout -b issue/124-contractor-review`), then commit the `SPEC.md` change to it so intent is version-controlled before implementation.
+6. **Request review (STOP)**: The full proposed spec lives in the **artifact** from step 4. In the chat, present only a **concise** summary — one line per rule, the key modeling/scope decisions (and anything you deliberately left out of scope), and the implied test list — and point the user to the artifact for the full text. **Do not paste the entire spec into the chat** (it is in the artifact; re-pasting wastes tokens). **Stop execution and wait for explicit approval.** If the user requests changes, revise the **artifact** and re-present (return to step 4). Do not write `SPEC.md`, branch, commit, or touch issue state until approved.
+7. **Land it on a branch (only after approval)**: Create and check out `issue/<number>-<short-kebab-case-title>` (e.g. `git checkout -b issue/124-contractor-review`); **then** write the approved content to `SPEC.md` in the repo and commit it, so intent is version-controlled before implementation. Writing `SPEC.md` only at this point is what keeps the default branch clean during review.
 8. **Mark the issue in progress**: Via the `github` MCP server, add an `in-progress` label or transition the issue state to indicate work has begun.
 9. **Finish**: Tell the user what actually happened — branch name, that the spec is committed, and that they can invoke `/implement` when ready.
 
 ## Guardrails
 - The story is **intake only**. If the story and `SPEC.md` disagree, surface the conflict by commenting on the issue and stopping; `SPEC.md` (and its owners) decide.
 - **Never widen scope beyond the criteria.** Add no field, `outcome`, rule, or invariant that THIS issue's acceptance criteria do not require — pricing/totals, serialization/format schemas, extra risk or safety dimensions and the like each belong to their own story. If the criteria are ambiguous, ask; do not invent.
-- No git or issue-state mutation before the user approves the spec (step 6).
+- No repository, git, or issue-state mutation before the user approves the spec (step 6). The draft lives **only** in the review artifact until then — in particular, do **not** write `SPEC.md` into the working tree pre-approval.
 
 ## Verification
 Before exiting this skill, you MUST verify:
@@ -59,8 +59,9 @@ Before exiting this skill, you MUST verify:
 - [ ] `SPEC.md` conforms to [templates/SPEC.template.md](templates/SPEC.template.md) (scaffolded it if absent), with new rules assigned the next sequential `rule_id` and no existing IDs renumbered.
 - [ ] The spec is **self-sufficient**: any new `Request` field, `outcome` value, global constraint, or term introduced by a rule is also reflected in the Domain model / Global constraints / Precedence order / Glossary, so `/implement` needs nothing but `SPEC.md`.
 - [ ] You did not treat the issue prose as canonical.
-- [ ] You presented the spec diff and implied test list and **waited for explicit approval** before any git or issue-state change.
-- [ ] After approval, you created/checked out the `issue/<number>-<title>` branch and committed `SPEC.md`.
+- [ ] You delivered the draft as a **review artifact** and left the repository untouched (no `SPEC.md` written to the working tree) until approval.
+- [ ] You presented a concise summary + the implied test list and **waited for explicit approval** before any repo, git or issue-state change.
+- [ ] After approval, you created/checked out the `issue/<number>-<title>` branch, **then** wrote `SPEC.md` to the repo and committed it.
 - [ ] You listed the implied test cases, including outcomes and expected `rule_ids`.
 - [ ] You used the `github` MCP server to add an `in-progress` label or transition the issue state.
 - [ ] You did not widen the scope beyond the explicit acceptance criteria.
