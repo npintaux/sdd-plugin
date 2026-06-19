@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 /home/user/.gemini/config/plugins/sdd-plugin/scripts/precommit_gate.py",
+            "command": "bash /home/user/.gemini/config/plugins/sdd-plugin/scripts/pre-tool-use.sh",
             "timeout": 30
           }
         ]

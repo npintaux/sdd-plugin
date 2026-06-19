@@ -19,7 +19,7 @@ Turn **one** item of intent (an acceptance criterion in `SPEC.md`, itself derive
   - `.agents/conventions/code-layout.md` — the project's **layout convention** (where code goes: package, module split, one-rule-per-file, test location), read by you before creating files.
   - `.agents/conventions/code-layout.env` — the same invariants in machine form, read by the hooks.
 
-  Read `code-layout.md` before creating any file so the structure is deterministic, not improvised. If these files are missing, **stop**: scaffold them from the plugin's templates (`templates/code-layout.template.md`, `templates/code-layout.env.template`) — do not invent an arrangement. The commit gate (`precommit_gate.py`) will **deny the eventual commit** if the contract is unmet, so provision it now.
+  Read `code-layout.md` before creating any file so the structure is deterministic, not improvised. If these files are missing, **stop**: scaffold them from the plugin's templates (`templates/code-layout.template.md`, `templates/code-layout.env.template`) — do not invent an arrangement. The commit gate (`gates/commit-gate.sh`) will **deny the eventual commit** if the contract is unmet, so provision it now.
 
 ## Scope discipline (one unit at a time)
 - **One acceptance criterion / rule per invocation.** Do not batch the whole story, and do not pull in behavior from a *different* user story (e.g. do not add allergy fields while implementing "take an order" — that is a separate story).
