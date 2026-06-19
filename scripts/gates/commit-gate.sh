@@ -30,6 +30,17 @@ fi
 # --- 2. The behavior contract must exist -------------------------------------
 [[ -f "SPEC.md" ]] || problems+=("SPEC.md missing at the repo root — run /specify first.")
 
+# --- 2b. SPEC.md conforms to the canonical structure (forced for reproducibility) --
+# The required sections are the H2 headings of SPEC.template.md (single source of
+# truth), so authors derive content into a FIXED shape rather than inventing layout.
+template="$HERE/../../skills/specify/templates/SPEC.template.md"
+if [[ -f "SPEC.md" && -f "$template" ]]; then
+  while IFS= read -r heading; do
+    grep -Fxq "$heading" SPEC.md \
+      || problems+=("SPEC.md is missing the required section '$heading' (the canonical structure in SPEC.template.md is mandatory).")
+  done < <(grep -E '^## ' "$template")
+fi
+
 # --- 3. The layout contract (prose + machine twin) must exist ----------------
 layout_md=".agents/conventions/code-layout.md"
 layout_env=".agents/conventions/code-layout.env"

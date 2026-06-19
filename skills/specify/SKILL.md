@@ -19,9 +19,11 @@ Bring intent **in** from GitHub and turn it into the artifacts engineering actua
 **Do not read the rest of the repository to "understand" it.** Reading unrelated files wastes tokens and risks importing scope that is not in the Issue. In particular do **not** open:
 - `docs/PRD.md` — the Product Owner's artifact; your intake is the **Issue**, not the PRD;
 - `.agents/conventions/code-layout.*`, `pyproject.toml`, `src/`, `AGENTS.md` — these are about *where code goes* and are `/implement`'s concern, irrelevant to a behavioral spec;
-- `docs/SPEC.example.md` or any sample — illustrative only. **Derive the spec from the Issue**; never copy an example.
+- any filled-in **sample/example** spec — **derive the spec from the Issue**; never copy an example.
 
 If you catch yourself listing or reading files beyond the three inputs above, stop — you have what you need.
+
+**Structure is mandatory, content is derived.** Conform to `SPEC.template.md`'s sections exactly (Overview, Domain model, Global constraints, Rules, Precedence order, Glossary) — this fixed shape is what makes specs reproducible and is **enforced at commit** (the gate denies a `SPEC.md` that is missing a canonical section). But every word of *content* must come from the Issue, not from a template placeholder or an example.
 
 ## Tool
 - **GitHub MCP server** (`github`) — used to fetch the issue and, after approval, update its state/labels. The agent decides which ticket is relevant, so a connector (not a hard-coded call) is appropriate.
