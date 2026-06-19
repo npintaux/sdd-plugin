@@ -1,5 +1,7 @@
 {
   "name": "sdd-plugin",
-  "description": "Software-Defined Delivery skills plugin",
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "description": "Spec-Driven Delivery skills + a deterministic commit gate",
+  "author": { "name": "Nicolas Pintaux" },
+  "hooks": "./hooks.json"
 }

@@ -94,19 +94,19 @@ The skills reference project files **by stable path, never by content** — that
 
 The plugin ships templates to scaffold conforming copies — `skills/specify/templates/SPEC.template.md`, `skills/implement/templates/code-layout.template.md`, `skills/implement/templates/code-layout.env.template` — exactly as `/specify` scaffolds `SPEC.md`. `code-layout.env` is the single source of truth for the machine-checkable layout: the prose (`code-layout.md`) is for the agent, `code-layout.env` is for the hook, and they declare the same paths/patterns. This is dependency inversion — the plugin depends on the *interface*, each project *implements* it.
 
-This plugin ships its hook wiring in [`hooks.json`](hooks.json) at the plugin root (plugin form — event map wrapped in `{"hooks": {…}}`). A consuming project may instead place an equivalent file at `.agents/hooks.json`. Wiring:
+This plugin ships its hook wiring in [`hooks.json`](hooks.json), registered via `"hooks": "./hooks.json"` in [`plugin.json`](plugin.json) (**required** — without that key Antigravity never loads the hooks).
 
-| Hook | Event (matcher) | Fires | Imposes |
+Antigravity's hook model is **tool-centric**, not prompt-centric: a hook binds to `PreToolUse`/`PostToolUse` with a `matcher` that is an **internal tool name** (e.g. `run_command`) — there is no "fires when `/specify` is typed" event. A hook receives the tool call as JSON on **stdin** (`{"toolCall":{"name":...,"args":{"CommandLine":...,"Cwd":...}}}`) and **blocks by printing a JSON decision to stdout** (`{"decision":"deny","reason":...}`), *not* by a non-zero exit code. So all enforcement is consolidated into one gate:
+
+| Hook | Event (matcher) | Fires | Imposes (deny) |
 |---|---|---|---|
-| `pre-specify` | `UserPromptExpansion` (`specify`) | `/specify` typed | git repo, clean tree, branch sanity |
-| `pre-implement` | `UserPromptExpansion` (`implement`) | `/implement` typed | the harness contract files exist (`SPEC.md`, `code-layout.md`, `code-layout.env`) |
-| `pre-commit` | `UserPromptExpansion` (`commit`) | `/commit` typed | on an `issue/` branch, something to commit |
-| `post-specify` | `PostToolUse` (`run_command`) | after any shell command; self-skips unless the last commit touched `SPEC.md` | spec commits land on a conforming `issue/` branch |
-| `post-implement` | `PostToolUse` (`run_command`) | after any shell command; self-skips unless the last commit is a code commit (per `code-layout.env`) | layout conforms: rule files match the pattern + have a test, the pure core stays I/O-free, code is on an `issue/` branch |
+| `precommit_gate.py` | `PreToolUse` (`run_command`) | before any shell command; self-skips unless the command is a `git commit` | the commit is on an `issue/<n>-<title>` branch; `SPEC.md` + the layout contract (`code-layout.md`/`code-layout.env`) exist; every rule file has a matching test; the pure core does not import the I/O shell |
 
-**The exact event names, the tool-call matcher, and the plugin script-path base are platform-specific — confirm them against `antigravity.google/docs/hooks` before relying on this wiring.**
+The gate reads the project's `code-layout.env`, so it carries no project-specific path; it fails **open** (allows) on its own errors. The command path in `hooks.json` is **absolute** (Antigravity provides no plugin-root variable).
 
-> **On "no commit before human validation."** A hook cannot *read* your approval, so it cannot be the gate for it. Two layers cover it instead: (1) the `/implement` skill **stops** and presents the diff + test results, and never commits or advances on its own (`/commit` is a separate, user-initiated step); (2) the **harness's own tool-approval** for `git commit`/`git push` is the deterministic backstop that survives context compaction — keep those commands requiring confirmation in your Antigravity settings rather than auto-approving them. The `post-implement` hook then imposes the *checkable* invariants (code lands on an `issue/` branch, layout conforms, every rule has a test).
+**Event names, matcher semantics, and the stdin/stdout contract are platform-specific — confirm them against `antigravity.google/docs/hooks` and a known-good reference plugin before relying on this wiring.**
+
+> **On "no commit before human validation."** A hook cannot *read* your approval, so it is not the gate for it. Two layers cover it instead: (1) the `/implement` skill **stops** and presents the diff + test results, and never commits or advances on its own (`/commit` is a separate, user-initiated step); (2) the **harness's own tool-approval** for `git commit`/`git push` is the deterministic backstop that survives context compaction — keep those commands requiring confirmation rather than auto-approving them. The `precommit_gate.py` hook then imposes the *checkable* invariants (right branch, contract present, layout conforms, every rule has a test).
 
 ---
 

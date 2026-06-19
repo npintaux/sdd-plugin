@@ -1,50 +1,13 @@
 {
   "hooks": {
-    "UserPromptExpansion": [
-      {
-        "matcher": "specify",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./scripts/pre-specify.sh",
-            "timeout": 15
-          }
-        ]
-      },
-      {
-        "matcher": "commit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./scripts/pre-commit.sh",
-            "timeout": 15
-          }
-        ]
-      },
-      {
-        "matcher": "implement",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./scripts/pre-implement.sh",
-            "timeout": 15
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
+    "PreToolUse": [
       {
         "matcher": "run_command",
         "hooks": [
           {
             "type": "command",
-            "command": "./scripts/post-specify.sh",
-            "timeout": 15
-          },
-          {
-            "type": "command",
-            "command": "./scripts/post-implement.sh",
-            "timeout": 15
+            "command": "python3 /home/user/.gemini/config/plugins/sdd-plugin/scripts/precommit_gate.py",
+            "timeout": 30
           }
         ]
       }
