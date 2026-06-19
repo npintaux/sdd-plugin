@@ -13,9 +13,9 @@ A structured second pass over a change. Advisory by design: it raises issues and
 
 ## Review checklist
 **Design (OO)**
-- Data modeled with `dataclasses`; behavior behind a `Rule` `Protocol`; composition, not inheritance.
-- One class per file; clear single responsibility.
-- No god-objects, no needless abstraction.
+- Data modeled with `dataclasses`; each rule is a class **subclassing the `Rule` ABC** (`@abstractmethod`); composition (the engine's ordered list), not inheritance.
+- One rule class per file; clear single responsibility. **No orphan rules** — every rule is registered in the engine's ordered list at the SPEC's precedence, and an engine-level test drives it through the entry point.
+- No god-objects, no needless abstraction. Small single-method rule classes are intentional — they must not carry per-file `# pylint: disable=too-few-public-methods` (the project configures it once).
 
 **Conventions**
 - Complete docstrings on public modules/classes/functions.

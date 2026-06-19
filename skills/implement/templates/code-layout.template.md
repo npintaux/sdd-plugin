@@ -47,10 +47,17 @@ apply, and if so what `outcome` and `rule_ids` do I produce?*
 
 - **One rule class per file**, named per `<RULE_FILE_PATTERN>` (e.g. `r2_<slug>.py`),
   under `<RULES_DIR>`.
-- Each rule implements a `Rule` Protocol, e.g. `evaluate(...) -> Decision | None`
-  (`None` = "I don't apply").
-- The **engine** holds the rules in an **ordered list**; precedence = list order; the
-  first non-`None` decision wins; the last rule is the catch-all guaranteeing totality.
+- Each rule **subclasses the `Rule` ABC** (`abc.ABC` + an `@abstractmethod`, e.g.
+  `evaluate(...) -> Decision | None`; `None` = "I don't apply"). The ABC — not a bare
+  `Protocol` — is deliberate: it lets the **engine enforce the contract** (a rule that
+  omits the method cannot be instantiated). Small single-method rule classes are
+  intentional; configure `pylint` once to allow them, never per-file disables.
+- The **engine** (`<engine module>`) is a **first-class artifact**: it holds the rule
+  instances in an **ordered list at the SPEC's precedence**, exposes the **entry point**
+  the SPEC names, and returns the first non-`None` decision; the last rule is the
+  catch-all guaranteeing totality. Implementing a rule **includes registering it** in
+  that list — **no orphan rules** — and the engine is a *walking skeleton* from the
+  first rule so the system is callable end-to-end at all times.
 - This ordered-list-of-rules design is what makes the engine auditable
   (`rule_ids` → file → commit `[Rn]` → issue) and declarative (add a policy = add a file).
 
@@ -59,6 +66,9 @@ apply, and if so what `outcome` and `rule_ids` do I produce?*
 - Live in `<TESTS_DIR>`, **mirroring** the rule files: `<TEST_FILE_PREFIX><rule>.py`.
 - One test file per rule; each test traces to an acceptance criterion in `SPEC.md`,
   not to the implementation. Assert the `outcome` **and** the `rule_ids`.
+- Plus an **engine-level test** that drives each rule through the engine's entry point:
+  the unit test pins the rule in isolation, the engine test pins its composition and
+  precedence (and catches orphan rules / wrong ordering).
 
 ## What a hook enforces (deterministic, not just advised)
 
