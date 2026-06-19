@@ -22,7 +22,7 @@ Turn **one** item of intent (an acceptance criterion in `SPEC.md`, itself derive
   Read `code-layout.md` before creating any file so the structure is deterministic, not improvised. If these files are missing, **stop**: scaffold them from the plugin's templates (`templates/code-layout.template.md`, `templates/code-layout.env.template`) — do not invent an arrangement. The commit gate (`gates/commit-gate.sh`) will **deny the eventual commit** if the contract is unmet, so provision it now.
 
 ## Scope discipline (one unit at a time)
-- **One acceptance criterion / rule per invocation.** Do not batch the whole story, and do not pull in behavior from a *different* user story (e.g. do not add allergy fields while implementing "take an order" — that is a separate story).
+- **One acceptance criterion / rule per invocation.** Do not batch the whole story, and do not pull in behavior from a *different* user story (a field, outcome, or rule that another story owns — that is a separate unit).
 - **Never auto-advance.** When the unit is green, you are done. Do not start the next criterion, the next rule, or the next story without a fresh, explicit instruction.
 
 ## Tools
@@ -31,9 +31,9 @@ Turn **one** item of intent (an acceptance criterion in `SPEC.md`, itself derive
 ## Procedure
 1. **Read the acceptance criteria** for the target item from `SPEC.md`. Restate them as a short checklist. Confirm the unit's scope — exactly which rule / criterion, nothing adjacent.
 2. **Locate the files** per `.agents/conventions/code-layout.md` (which package, which module, which test file). Do not improvise paths.
-3. **Write the tests first (red).** One test per criterion. Assert the `outcome` **and** the `rule_ids` where a rule decides (e.g. `take_order(order="latte")` → `ASK`, `["R2"]`). Trace each test to the criterion it pins, not to the implementation.
+3. **Write the tests first (red).** One test per criterion. Assert the `outcome` **and** the `rule_ids` where a rule decides (e.g. `evaluate(amount=50, requester_tier="contractor")` → `REVIEW`, `["R4"]`). Trace each test to the criterion it pins, not to the implementation.
 4. **Implement object-oriented, Pythonic code:**
-   - `dataclasses` for data (`Request`/`Order`, `Decision`); make them frozen where natural.
+   - `dataclasses` for data (`Request`, `Decision`); make them frozen where natural.
    - a `Rule` interface via `typing.Protocol` (or ABC); **one rule class per file**, in the location the convention dictates.
    - **composition over inheritance** — the engine holds an ordered list of rules; precedence = list order.
    - full type hints; pure functions in the core (no I/O, no network, deterministic).
@@ -62,6 +62,6 @@ Tests derived from the acceptance criteria, all green; gates pass; code is OO an
 - **Never widen scope** beyond the single acceptance criterion in play.
 
 ## Example invocation
-`/implement R2` → writes the failing test for the "missing size → ASK" rule, implements `r2_ask.py` in the location the convention dictates, runs to green, then **stops and presents the diff and test results for review** — it does not commit.
+`/implement R4` → writes the failing test for the "contractor → REVIEW" rule, implements `r4_contractor.py` in the location the convention dictates, runs to green, then **stops and presents the diff and test results for review** — it does not commit.
 
 > Note: a skill **guides** the method; it cannot **guarantee** it. The guarantees are the hook layer (gates, branch/commit checks) and the harness permission on `git commit`. Confirm your platform's exact `SKILL.md` frontmatter and `.agents/` layout against the current docs.

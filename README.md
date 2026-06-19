@@ -51,18 +51,20 @@ type(scope): summary [Rn] (#xxx)
 ```
 
 ```
-feat(rules): allergen safety always triggers SUBSTITUTE or REFUSE [R4] (#124)
-feat(schema): Decision carries price + policy_version + evaluated_at (#126)
+feat(rules): contractor requests always REVIEW [R4] (#124)
+feat(schema): Decision carries policy_version + evaluated_at (#126)
 ```
 
-This yields end-to-end traceability **story ↔ commit ↔ rule ↔ runtime**. Each `Decision` returned by the engine carries a `rule_ids` field, so an auditor can start from a production `REFUSE`, read `rule_ids=["R4"]`, find the `[R4]` commit, then the story and the PRD that motivated it.
+This yields end-to-end traceability **story ↔ commit ↔ rule ↔ runtime**. Each `Decision` returned by the engine carries a `rule_ids` field, so an auditor can start from a production `DENY`, read `rule_ids=["R4"]`, find the `[R4]` commit, then the story and the PRD that motivated it.
 
-| `take_order(request)` | action | `rule_ids` |
+*(Examples use a generic decision/approval engine — `evaluate(request) → outcome`. The method is domain-neutral; a consuming project supplies its own domain in `SPEC.md`.)*
+
+| `evaluate(request)` | outcome | `rule_ids` |
 |---|---|---|
-| `medium oat latte` | MAKE | `["R1"]` |
-| `latte` (no size) | ASK | `["R2"]` |
-| `hazelnut latte` (nut allergy) | REFUSE | `["R4"]` |
-| `unicorn frappe` | REFUSE | `["R3"]` |
+| `amount=50, category=office` | APPROVE | `["R1"]` |
+| `amount=900, category=office` | REVIEW | `["R2"]` |
+| `requester_tier=contractor` | REVIEW | `["R4"]` |
+| `category=prohibited` | DENY | `["R3"]` |
 
 ---
 
