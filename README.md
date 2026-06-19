@@ -80,9 +80,33 @@ The engineering skills are meant to live under the repo's agent config; the PO s
 └── prd-to-backlog.md     # /prd-to-backlog   (Product Owner — off-repo in practice)
 ```
 
-When wired into a project, the engineering skills sit under `.agents/skills/`, with `AGENTS.md` acting as a thin **router** that points to them and to the always-on convention files (`.agents/conventions/style.md`, `architecture.md`). *(Those convention/router files are not in this repo yet.)*
+When wired into a project, the engineering skills sit under `.agents/skills/`, with `AGENTS.md` acting as a thin **router** that points to them and to the always-on convention files. The companion `sdd-barista-agent` repo ships this: an `AGENTS.md` router at its root and a layout convention under `.agents/conventions/`. The layout convention is what makes the *structure* deterministic; the skill carries the method, the convention carries the layout, and a hook imposes the load-bearing parts.
 
-This plugin ships its hook wiring in [`hooks.json`](hooks.json) at the plugin root (plugin form — event map wrapped in `{"hooks": {…}}`). A consuming project may instead place an equivalent file at `.agents/hooks.json`. The `pre-specify` gate is wired to `UserPromptExpansion` (so it fires when `/specify` is typed) and `post-specify` to `PostToolUse`. **The exact event names, the tool-call matcher, and the plugin script-path base are platform-specific — confirm them against `antigravity.google/docs/hooks` before relying on this wiring.**
+### The harness contract (how the plugin stays project-independent)
+
+The skills reference project files **by stable path, never by content** — that is an *interface*, not coupling (the same way every skill references `SPEC.md`). A consuming project agrees to provide a small, fixed set of files; the plugin depends only on those slots:
+
+| File (project-provided) | Read by | Purpose |
+|---|---|---|
+| `SPEC.md` (repo root) | `/specify`, `/implement`, hooks | the behavior contract |
+| `.agents/conventions/code-layout.md` | `/implement` (the agent) | where code goes — prose layout |
+| `.agents/conventions/code-layout.env` | `post-implement` hook | the same invariants as `key=value`, so enforcement carries **no** project-specific path |
+
+The plugin ships templates to scaffold conforming copies — `skills/specify/templates/SPEC.template.md`, `skills/implement/templates/code-layout.template.md`, `skills/implement/templates/code-layout.env.template` — exactly as `/specify` scaffolds `SPEC.md`. `code-layout.env` is the single source of truth for the machine-checkable layout: the prose (`code-layout.md`) is for the agent, `code-layout.env` is for the hook, and they declare the same paths/patterns. This is dependency inversion — the plugin depends on the *interface*, each project *implements* it.
+
+This plugin ships its hook wiring in [`hooks.json`](hooks.json) at the plugin root (plugin form — event map wrapped in `{"hooks": {…}}`). A consuming project may instead place an equivalent file at `.agents/hooks.json`. Wiring:
+
+| Hook | Event (matcher) | Fires | Imposes |
+|---|---|---|---|
+| `pre-specify` | `UserPromptExpansion` (`specify`) | `/specify` typed | git repo, clean tree, branch sanity |
+| `pre-implement` | `UserPromptExpansion` (`implement`) | `/implement` typed | the harness contract files exist (`SPEC.md`, `code-layout.md`, `code-layout.env`) |
+| `pre-commit` | `UserPromptExpansion` (`commit`) | `/commit` typed | on an `issue/` branch, something to commit |
+| `post-specify` | `PostToolUse` (`run_command`) | after any shell command; self-skips unless the last commit touched `SPEC.md` | spec commits land on a conforming `issue/` branch |
+| `post-implement` | `PostToolUse` (`run_command`) | after any shell command; self-skips unless the last commit is a code commit (per `code-layout.env`) | layout conforms: rule files match the pattern + have a test, the pure core stays I/O-free, code is on an `issue/` branch |
+
+**The exact event names, the tool-call matcher, and the plugin script-path base are platform-specific — confirm them against `antigravity.google/docs/hooks` before relying on this wiring.**
+
+> **On "no commit before human validation."** A hook cannot *read* your approval, so it cannot be the gate for it. Two layers cover it instead: (1) the `/implement` skill **stops** and presents the diff + test results, and never commits or advances on its own (`/commit` is a separate, user-initiated step); (2) the **harness's own tool-approval** for `git commit`/`git push` is the deterministic backstop that survives context compaction — keep those commands requiring confirmation in your Antigravity settings rather than auto-approving them. The `post-implement` hook then imposes the *checkable* invariants (code lands on an `issue/` branch, layout conforms, every rule has a test).
 
 ---
 

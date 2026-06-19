@@ -12,7 +12,7 @@ Provide a concrete list of testable behaviors, using "Given/When/Then" statement
 - [ ] **Given** <initial context or state> **When** <event or action occurs> **Then** <expected outcome>
 
 ## References
-- **PRD Source:** [PRD.md#us<n>](PRD.md#us<n>) (repo-relative link to the source story)
+- **PRD Source:** [docs/PRD.md#us<n>](docs/PRD.md#us<n>) (repo-relative link to the source story)
 
 <!--
   Reconciliation marker (do not edit by hand): the `prd-sync` comment at the top of

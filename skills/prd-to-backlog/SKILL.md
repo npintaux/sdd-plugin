@@ -61,7 +61,7 @@ Before exiting this skill, you MUST verify the following:
 - [ ] Each created or updated issue carries the hidden `prd-sync` marker with the correct `key` and `src-sha`.
 - [ ] You derived priority from the PRD (asking the PO when absent/ambiguous) and applied it — with the `status:draft` label — as real GitHub label metadata via the MCP.
 - [ ] You handled removed stories by leaving them intact and flagging them to the PO.
-- [ ] Each drafted or updated issue body conforms to [templates/STORY.template.md](templates/STORY.template.md), including a repo-relative PRD link (e.g. `PRD.md#us1`).
+- [ ] Each drafted or updated issue body conforms to [templates/STORY.template.md](templates/STORY.template.md), including a repo-relative PRD link (e.g. `docs/PRD.md#us1`).
 - [ ] You did not create, modify, or delete any code files or `SPEC.md` during execution.
 
 ## Example
