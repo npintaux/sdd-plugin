@@ -1,6 +1,6 @@
 # Antigravity Skills — Spec-Driven Development harness
 
-A small catalog of **CLI-invocable skills** that standardize *how* code is written, validated, tested, and shipped on an agent-first workflow with [Antigravity](https://antigravity.google). They are the **platform harness** behind a Spec-Driven Development (SDD) lab built around a sample application, the **Barista Agent**.
+A small catalog of **CLI-invocable skills** that standardize *how* code is written, validated, tested, and shipped on an agent-first workflow with [Antigravity](https://antigravity.google). They are a reusable **platform harness** for Spec-Driven Development (SDD), illustrated by a companion sample application.
 
 The guiding principle:
 
@@ -82,7 +82,7 @@ The engineering skills are meant to live under the repo's agent config; the PO s
 └── prd-to-backlog.md     # /prd-to-backlog   (Product Owner — off-repo in practice)
 ```
 
-When wired into a project, the engineering skills sit under `.agents/skills/`, with `AGENTS.md` acting as a thin **router** that points to them and to the always-on convention files. The companion `sdd-barista-agent` repo ships this: an `AGENTS.md` router at its root and a layout convention under `.agents/conventions/`. The layout convention is what makes the *structure* deterministic; the skill carries the method, the convention carries the layout, and a hook imposes the load-bearing parts.
+When wired into a project, the engineering skills sit under `.agents/skills/`, with `AGENTS.md` acting as a thin **router** that points to them and to the always-on convention files. For example, the companion `sdd-barista-agent` repo demonstrates this: an `AGENTS.md` router at its root and a layout convention under `.agents/conventions/`. The layout convention is what makes the *structure* deterministic; the skill carries the method, the convention carries the layout, and a hook imposes the load-bearing parts.
 
 ### The harness contract (how the plugin stays project-independent)
 
@@ -153,5 +153,5 @@ These skills are the harness for an SDD lab. The companion deliverables (separat
 
 - **"Getting the most from code assistants"** — the reference deck.
 - **SDD Workshop Deck** and **SDD Workshop Guide** — the hands-on lab.
-- **Barista Agent PRD** — the product definition of the sample app.
+- **The sample app's PRD** — the product definition of the companion sample application.
 - **Lab Environment Setup Guide** — how to prepare an individual Google Cloud / GitHub / Artifact Registry environment.
