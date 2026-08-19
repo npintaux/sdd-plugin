@@ -1,6 +1,6 @@
 ---
 name: ship
-description: Close out one GitHub Issue by opening a pull request from its issue branch, monitoring CI checks until green, squash-merging into main, deleting the remote/local branch, and pulling main up to date. Use once per issue when all acceptance criteria in SPEC.md are implemented, committed, and green ("/ship", "open PR and merge", "ship this issue", "close out ticket"). Do not use for per-rule commits (use commit) or while work is still in progress (use implement).
+description: Close out a completed GitHub Issue by delivering its issue branch into main and updating local tracking. Use once per issue when all acceptance criteria in SPEC.md are fully implemented, committed, and ready to merge ("/ship", "open PR and merge", "ship this issue", "close out ticket", "land issue on main"). Do not use for committing individual rules (use commit) or while implementation is still in progress (use implement).
 ---
 
 # /ship

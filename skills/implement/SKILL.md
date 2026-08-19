@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Implement one unit of work from SPEC.md using TDD and object-oriented Python — derive failing unit and engine-level tests from acceptance criteria, implement single-rule subclasses of the Rule ABC, register in engine.py at SPEC precedence, and run to green following project layout conventions. Stops for human review before commit. Use whenever turning an acceptance criterion or rule from SPEC.md into code ("/implement R2", "implement the next rule", "build US1's engine", "code this rule"). Do not use for committing (use commit) or creating specs from issues (use specify).
+description: Implement individual acceptance criteria or rules from SPEC.md into object-oriented Python code using TDD, Rule ABC subclasses, and engine.py composition. Use when turning an acceptance criterion or rule from SPEC.md into code, adding rule classes, or building the decision engine ("/implement R2", "implement the next rule", "build US1's engine", "code this rule", "TDD this criterion"). Do not use for committing changes (use commit), reviewing code (use code-review), or creating specifications from issues (use specify).
 ---
 
 # /implement
