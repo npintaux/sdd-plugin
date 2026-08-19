@@ -17,6 +17,15 @@ cwd="${1:-$PWD}"
 root="$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)" || hook_allow "not a git repository"
 cd "$root" || hook_allow "cannot enter repo root"
 
+layout_md=".agents/conventions/code-layout.md"
+layout_env=".agents/conventions/code-layout.env"
+
+# If this repo does not use SDD (no SPEC.md and no code-layout contract), fail open so
+# plugin authoring and non-SDD repositories are not blocked.
+if [[ ! -f "SPEC.md" && ! -f "$layout_md" && ! -f "$layout_env" ]]; then
+  hook_allow "non-SDD repository (no SPEC.md or code-layout conventions found)"
+fi
+
 problems=()   # collect every violation, so the agent sees them all at once
 
 # --- 1. Branch: SDD work lands on issue/<n>-<title>, never the default branch --
