@@ -1,0 +1,122 @@
+{
+  "skill": "ship",
+  "queries": [
+    {
+      "quadrant": "Q1_direct",
+      "query": "/ship",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "open PR, wait for CI to turn green, and squash merge to main",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "ship this issue to main",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "close out this issue by creating PR and merging",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "open the pull request and merge after checks pass",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "all acceptance criteria are implemented and committed, let's ship it",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "we are ready to deliver ticket #12, create the PR and merge when green",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "wrap up this feature branch, merge it into main, and clean up the branch",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "land this completed issue on the main branch",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "how do I configure shipping rates in WooCommerce?",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "e-commerce shipping query, unrelated to git workflow"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "build a docker container image for deployment",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "container build / deployment task, not git issue closure"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "list all open pull requests on the repository",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "listing PRs query, not executing the ship workflow"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "how do squash merges work in git compared to rebase merges?",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "conceptual question about git merge strategies"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "view the logs of the last GitHub Actions workflow run",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "CI log inspection, not shipping an issue branch"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "commit rule R5 for issue #42",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to commit skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "implement the remaining acceptance criteria for issue #42",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to implement skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "review the changes on this branch before shipping",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to code-review skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "intake ticket #43 and prepare SPEC.md",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to specify skill"
+    }
+  ]
+}

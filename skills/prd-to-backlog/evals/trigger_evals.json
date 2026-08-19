@@ -1,0 +1,122 @@
+{
+  "skill": "prd-to-backlog",
+  "queries": [
+    {
+      "quadrant": "Q1_direct",
+      "query": "/prd-to-backlog",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "draft the user stories from this PRD into GitHub issues",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "populate GitHub backlog from docs/PRD.md",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "reconcile PRD changes with our existing GitHub tickets",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "convert requirements in PRD.md to drafted user stories on GitHub",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "I just updated the product requirements doc, can you sync the new stories to github?",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "create draft tickets for all the features described in our PRD",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "as product owner I need the backlog generated from this PRD with acceptance criteria",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "turn the user story sections in PRD.md into draft issues with MoSCoW priorities",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "how do I write a good PRD for an AI product?",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "general advice on PRD writing, not backlog ingestion"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "render PRD.md into an HTML presentation slide deck",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "formatting doc as slides, not generating GitHub backlog"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "list the titles of all sections in docs/PRD.md",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "simple document exploration, not issue creation"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "fix typos and formatting in PRD.md",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "editing markdown text in place, not reconciling backlog"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "generate a burndown chart from github issues",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "metrics/reporting task, not backlog ingestion"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "intake issue #12 and propose the behavioral specification in SPEC.md",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to specify skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "implement rule R1 in Python with tests",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to implement skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "write a commit message for issue #4 [R2]",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to commit skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "open a pull request for issue 8 and squash merge",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to ship skill"
+    }
+  ]
+}

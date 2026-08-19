@@ -1,6 +1,6 @@
 ---
 name: specify
-description: Pull a user story from GitHub via the GitHub MCP server, extract its acceptance criteria, and translate them into proposed SPEC.md updates and test cases. The agent reads GitHub (intake) but obeys SPEC.md (source of truth). Use when starting work from an issue ("/specify #124", "pull the story", "what does this ticket need").
+description: Pull a user story from GitHub via the GitHub MCP server, extract its acceptance criteria, and translate them into proposed SPEC.md updates and test cases as a review artifact. The agent reads GitHub (intake) but obeys SPEC.md (source of truth). Use when starting work on a GitHub Issue, refining an intake ticket, or generating behavioral specifications from stories ("/specify #124", "pull the story", "what does this ticket need"). Do not use for Product Owner PRD drafting (use prd-to-backlog) or for writing Python code (use implement).
 ---
 
 # /specify
@@ -9,6 +9,14 @@ Bring intent **in** from GitHub and turn it into the artifacts engineering actua
 
 ## When to use
 - Starting a cycle or a task from a GitHub Issue.
+- Translating issue acceptance criteria into a formal `SPEC.md` draft.
+- Reviewing and agreeing on behavioral requirements and test cases before coding.
+
+## When NOT to use
+- Drafting or updating user stories from a Product Owner PRD (use `/prd-to-backlog`).
+- Writing Python code or test implementations for rules in `SPEC.md` (use `/implement`).
+- Staging and committing implemented rules (use `/commit`).
+- Opening pull requests and merging completed issues (use `/ship`).
 
 ## Inputs — and ONLY these (keep the context tight)
 `/specify` produces one file, `SPEC.md`. To do that it needs exactly three inputs:
@@ -51,6 +59,14 @@ If you catch yourself listing or reading files beyond the three inputs above, st
 - The story is **intake only**. If the story and `SPEC.md` disagree, surface the conflict by commenting on the issue and stopping; `SPEC.md` (and its owners) decide.
 - **Never widen scope beyond the criteria.** Add no field, `outcome`, rule, or invariant that THIS issue's acceptance criteria do not require — pricing/totals, serialization/format schemas, extra risk or safety dimensions and the like each belong to their own story. If the criteria are ambiguous, ask; do not invent.
 - No repository, git, or issue-state mutation before the user approves the spec (step 6). The draft lives **only** in the review artifact until then — in particular, do **not** write `SPEC.md` into the working tree pre-approval.
+
+## Common Rationalizations
+| The excuse | The reality |
+|---|---|
+| "I'll write `SPEC.md` directly into the repo so the user can see it." | Writing the working tree pollutes the default branch before review. Deliver drafts strictly via review artifacts. |
+| "I should explore the whole repo to understand the architecture." | Reading unrelated code wastes tokens and introduces scope creep. Read only the issue, the template, and existing `SPEC.md`. |
+| "I can renumber rules to keep them grouped logically." | Rule IDs are immutable, permanent identifiers (`R1`, `R2`, …). Never renumber or reuse an ID. |
+| "I'll start coding the rule right after drafting the spec." | `/specify` stops immediately after committing the spec on the issue branch. Implementation is done by `/implement`. |
 
 ## Verification
 Before exiting this skill, you MUST verify:
