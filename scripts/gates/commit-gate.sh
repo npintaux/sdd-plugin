@@ -79,6 +79,68 @@ if [[ -n "${PURE_DIR:-}" && -d "$PURE_DIR" && -n "${FORBIDDEN_IMPORT_REGEX:-}" ]
   [[ -z "$hit" ]] || problems+=("the pure core ($PURE_DIR) imports the I/O shell ($hit); the dependency points one way only: shell -> core.")
 fi
 
+# --- 6. Python virtual environment activation --------------------------------
+if [[ -f "venv/bin/activate" ]]; then
+  source venv/bin/activate
+elif [[ -f ".venv/bin/activate" ]]; then
+  source .venv/bin/activate
+fi
+
+# --- 7. Run pylint -----------------------------------------------------------
+if command -v pylint >/dev/null 2>&1; then
+  py_files=()
+  while IFS= read -r f; do
+    [[ -f "$f" ]] && py_files+=("$f")
+  done < <(git ls-files '*.py')
+
+  if ((${#py_files[@]} > 0)); then
+    echo "Running pylint on ${#py_files[@]} file(s)..." >&2
+    pylint_output="$(pylint "${py_files[@]}" 2>&1)"
+    pylint_exit_code=$?
+    if ((pylint_exit_code != 0)); then
+      problems+=("pylint violations found:
+$pylint_output")
+    fi
+  fi
+else
+  problems+=("pylint executable not found (is the virtual environment activated and pylint installed?)")
+fi
+
+# --- 8. Run pytest (runs unit tests + coverage) -------------------------------
+if command -v pytest >/dev/null 2>&1; then
+  echo "Running pytest..." >&2
+  pytest_output="$(pytest 2>&1)"
+  pytest_exit_code=$?
+  if ((pytest_exit_code != 0)); then
+    has_tests=0
+    if [[ -n "${TESTS_DIR:-}" && -d "$TESTS_DIR" ]]; then
+      if find "$TESTS_DIR" -name "*.py" -print -quit | grep -q .; then
+        has_tests=1
+      fi
+    fi
+
+    if ((pytest_exit_code == 5 && has_tests == 0)); then
+      echo "No tests found to run, skipping pytest gate." >&2
+    else
+      problems+=("pytest failed (exit code $pytest_exit_code):
+$pytest_output")
+    fi
+  fi
+else
+  problems+=("pytest executable not found (is the virtual environment activated and pytest installed?)")
+fi
+
+# --- 9. Run Trivy security scan -----------------------------------------------
+if command -v trivy >/dev/null 2>&1; then
+  echo "Running Trivy security scan..." >&2
+  trivy_output="$(trivy fs --exit-code 1 --severity HIGH,CRITICAL --scanners vuln,secret,misconfig --skip-db-update --skip-java-db-update --skip-version-check . 2>&1)"
+  trivy_exit_code=$?
+  if ((trivy_exit_code != 0)); then
+    problems+=("Trivy security scan failed:
+$trivy_output")
+  fi
+fi
+
 # --- Verdict -----------------------------------------------------------------
 if ((${#problems[@]} > 0)); then
   reason="Commit blocked by the SDD gate:"
@@ -87,4 +149,4 @@ if ((${#problems[@]} > 0)); then
   hook_deny "$reason"
 fi
 
-hook_allow "SDD gate: branch, contract and layout OK."
+hook_allow "SDD gate: branch, contract, layout, linter, tests, and security scans OK."

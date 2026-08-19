@@ -1,0 +1,122 @@
+{
+  "skill": "code-review",
+  "queries": [
+    {
+      "quadrant": "Q1_direct",
+      "query": "/code-review",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "review this code diff for OO design and convention issues",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "check my code before I commit rule R3",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "look over this change and audit our Rule ABC and engine composition",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "perform an advisory code review of the new decision rules",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "can you check if my new rule implementation follows our project conventions?",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "give me feedback on this diff before we open a pull request",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "audit whether we have any orphan rules or missing docstrings in our engine",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "take a critical look at how I implemented the contractor rule and test coverage",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "what are the standard principles of object-oriented design?",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "conceptual question about OO design, no code review requested"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "write a summary of the latest Python 3.13 release notes",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "general tech research query, not a code review"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "fix the failing test in test_engine.py so it passes",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "bug fixing / implementation edit, not an advisory review"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "how do I configure code review rules in GitHub branch protection?",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "GitHub repo administration question"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "run git diff against origin/main and print raw output",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "raw shell command, not code review analysis"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "implement rule R2 from SPEC.md in Python",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to implement skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "write a conventional commit message for rule R3 with issue #8",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to commit skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "open PR and merge issue #8 to main",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to ship skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "pull issue #8 from github and draft SPEC.md",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to specify skill"
+    }
+  ]
+}

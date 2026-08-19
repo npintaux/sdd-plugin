@@ -1,0 +1,122 @@
+{
+  "skill": "implement",
+  "queries": [
+    {
+      "quadrant": "Q1_direct",
+      "query": "/implement R4",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "implement the next rule in SPEC.md using TDD",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "implement rule R2 contractor evaluation in Python",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "build US1's engine and wire the first rule",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "code acceptance criterion 3 from the spec into a Rule class with tests",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "let's start coding rule R1, write the failing tests first",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "build out the decision logic for the auto-approval threshold rule",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "write the python implementation and unit tests for R3 vip handling",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "turn the newly added SPEC rule into a tested rule class registered in engine.py",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "how do I implement a binary search tree in C++?",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "generic algorithm question in C++, not SDD rule implementation"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "can you explain how the Rule ABC pattern works conceptually?",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "conceptual architecture question, no implementation task"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "install pytest and pylint into the venv environment",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "environment / package installation task"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "run pytest on the test suite and show coverage",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "running test suite command directly, not implementing a rule"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "format all Python files using black and isort",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "generic code formatting task"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "pull issue #12 from github and draft SPEC.md",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to specify skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "review this code diff for OO design and convention issues",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to code-review skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "commit rule R4 for issue #124",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to commit skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "open PR, wait for CI and ship issue #124",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to ship skill"
+    }
+  ]
+}

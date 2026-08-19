@@ -1,0 +1,122 @@
+{
+  "skill": "specify",
+  "queries": [
+    {
+      "quadrant": "Q1_direct",
+      "query": "/specify #124",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "pull issue #45 from github and create the specification",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "specify the acceptance criteria from ticket #88 into SPEC.md",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "let's specify issue 12 to generate the formal spec draft",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "fetch issue #31 and translate its requirements into SPEC.md rules",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "what does ticket #52 need us to build? let's review the requirements first",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "we are starting work on issue 7, turn the acceptance criteria into testable rules",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "intake the latest user story from github and propose the behavioral contract",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "pull the story for ticket 103 and prepare the test matrix and domain model",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "how do I specify a custom timeout parameter in python requests?",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "asks about Python API parameters, not SDD specification intake"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "explain what OpenAPI specification format is",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "general tech explanation query about OpenAPI specs"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "read SPEC.md and summarize what R1 does",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "informational reading of existing spec, not intake from an issue"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "write unit tests for the existing r3_vip rule in tests/test_r3.py",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "writing test implementation code, not specifying an issue"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "list all open issues in the github repository",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "generic GitHub query without intent to specify a story"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "turn the product requirements document docs/PRD.md into GitHub backlog tickets",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to prd-to-backlog skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "implement rule R4 from SPEC.md following TDD",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to implement skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "commit the changes for rule R2 with issue #15",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to commit skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "open a pull request for issue 124, wait for CI and merge it",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to ship skill"
+    }
+  ]
+}

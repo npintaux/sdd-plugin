@@ -7,7 +7,7 @@
           {
             "type": "command",
             "command": "bash /home/user/.gemini/config/plugins/sdd-plugin/scripts/pre-tool-use.sh",
-            "timeout": 30
+            "timeout": 90
           }
         ]
       }

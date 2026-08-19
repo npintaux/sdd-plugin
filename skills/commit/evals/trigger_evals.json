@@ -1,0 +1,122 @@
+{
+  "skill": "commit",
+  "queries": [
+    {
+      "quadrant": "Q1_direct",
+      "query": "/commit",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "commit this change with conventional commit message for rule R2",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "write a commit message for issue #45 and rule [R1]",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "stage and commit the reviewed implementation of rule R4",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "create a conventional commit linked to ticket #12",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "tests are green and approved, let's commit our contractor rule changes",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "save this unit of work into git history with the right rule and issue tags",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "generate the traceable commit message and commit to this issue branch",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "the code review is approved, go ahead and commit the rule",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "what is the conventional commits specification format?",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "conceptual question about conventional commit standards"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "git log -n 5 to view recent commit history",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "inspecting commit history, not creating a commit"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "how do I undo my last commit in git?",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "git troubleshooting question, not committing work"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "run git status to see modified files",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "inspecting working tree state"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "write a git hook script to check branch names",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "writing shell script infrastructure, not committing"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "implement rule R3 in Python with TDD",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to implement skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "review this diff for OO design issues",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to code-review skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "open PR and merge issue #45 into main",
+      "expect": "no-trigger",
+      "split": "train",
+      "note": "belongs to ship skill"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "pull issue #45 from github and create SPEC.md",
+      "expect": "no-trigger",
+      "split": "val",
+      "note": "belongs to specify skill"
+    }
+  ]
+}

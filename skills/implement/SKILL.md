@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Implement one unit of work from SPEC.md using TDD, object-oriented Python and docstrings — derive the tests from the acceptance criteria first, then write code until green, following the project's layout convention. Stops for human review before any commit. Use whenever turning a single acceptance criterion or rule from SPEC.md into code (e.g. "/implement R2", "implement the next rule", "build US1's engine"). This is the single entry point for writing code in this repo.
+description: Implement one unit of work from SPEC.md using TDD and object-oriented Python — derive failing unit and engine-level tests from acceptance criteria, implement single-rule subclasses of the Rule ABC, register in engine.py at SPEC precedence, and run to green following project layout conventions. Stops for human review before commit. Use whenever turning an acceptance criterion or rule from SPEC.md into code ("/implement R2", "implement the next rule", "build US1's engine", "code this rule"). Do not use for committing (use commit) or creating specs from issues (use specify).
 ---
 
 # /implement
@@ -10,6 +10,13 @@ Turn **one** item of intent (an acceptance criterion in `SPEC.md`, itself derive
 ## When to use
 - A new or changed acceptance criterion exists in `SPEC.md`.
 - You are starting a cycle, or adding/altering a single rule in the decision engine.
+- Writing test-driven code pinned to formal specification rules.
+
+## When NOT to use
+- Starting from a raw GitHub issue or PRD before `SPEC.md` exists (use `/specify`).
+- Staging and committing green changes with traceable commit messages (use `/commit`).
+- Advisory review of diffs and OO design before commit (use `/code-review`).
+- Opening PRs and merging completed issues (use `/ship`).
 
 ## Preconditions
 - The target behavior is written in `SPEC.md`. If it is missing or ambiguous, **stop and ask** — do not invent scope.
@@ -58,6 +65,27 @@ Turn **one** item of intent (an acceptance criterion in `SPEC.md`, itself derive
 - `pylint` — zero violations on the agreed ruleset (includes missing-docstring).
 - `pytest` — all tests green.
 - coverage ≥ 90 % (this pure engine naturally approaches 100 %).
+
+## Common Rationalizations
+| The excuse | The reality |
+|---|---|
+| "The tests pass, so I will commit automatically." | `/implement` never commits. It stops and waits for human review and approval. |
+| "I'll implement all rules in the story at once." | Scope discipline requires one unit / rule per invocation. |
+| "I will use a Protocol instead of ABC." | Subclassing `Rule` (ABC) is mandatory so the engine enforces the contract at instantiation. |
+| "I'll add `# pylint: disable=too-few-public-methods` to the rule file." | Single-method rule classes are intentional; configure pylint centrally in `pyproject.toml`, never per-file. |
+| "I'll write the rule class and wire the engine later." | Implementing a rule includes registering it in `engine.py` at SPEC precedence immediately (no orphan rules). |
+
+## Verification
+Before exiting this skill, you MUST verify:
+- [ ] You derived failing tests (red) first from acceptance criteria in `SPEC.md`.
+- [ ] You wrote tests at two levels: the isolated rule unit test and the engine-level test through the entry point.
+- [ ] Each rule is in its own file and subclasses the `Rule` ABC (`@abstractmethod`).
+- [ ] The rule instance is registered in the `engine.py` ordered list at the precedence specified in `SPEC.md`.
+- [ ] Complete docstrings exist on all public modules, classes, and functions.
+- [ ] Explicit type hints and Python idioms are used throughout.
+- [ ] All tests pass green with test coverage >= 90%.
+- [ ] Pylint passes with zero violations (any `too-few-public-methods` disabled centrally in `pyproject.toml`, not per-file).
+- [ ] You stopped execution and presented the diff and test results for human review without committing or advancing.
 
 ## Definition of done
 Tests derived from the acceptance criteria, all green; gates pass; code is OO and documented; placed per the layout convention; **the rule subclasses the `Rule` ABC and is registered in the engine's ordered list at the right precedence (no orphan rule); an engine-level test drives it through the entry point;** no behavior exists that is not pinned by a test — **and the change has been presented for review and is awaiting the user's decision to `/commit`.** Implementation is *not* "done" the moment tests go green; it is done when the human has seen it.

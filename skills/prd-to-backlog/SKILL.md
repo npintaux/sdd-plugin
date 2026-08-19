@@ -1,6 +1,6 @@
 ---
 name: prd-to-backlog
-description: (Product Owner skill — lives in the PO's own context, NOT the engineering repo.) From any PRD, draft user stories with acceptance criteria and create them as issues in GitHub via the GitHub MCP connector, checking for existing issues to prevent duplicates and handle incremental updates. The PO reviews and publishes. This skill never touches SPEC.md or code. Use when the PO wants to turn a PRD into a backlog ("/prd-to-backlog", "draft the stories from this PRD", "populate GitHub").
+description: Draft user stories with acceptance criteria from a PRD and reconcile them as GitHub Issues via the GitHub MCP connector, checking existing issues and prd-sync markers to prevent duplicates. (Product Owner persona — lives in the PO context, not engineering). Use when the Product Owner wants to turn a PRD into a backlog or update GitHub tickets from PRD changes ("/prd-to-backlog", "draft stories from this PRD", "populate GitHub from requirements"). Do not use for technical specification (use specify) or writing implementation code (use implement).
 ---
 
 # /prd-to-backlog  (Product Owner)
@@ -9,6 +9,14 @@ Turn product intent (the PRD) into a drafted backlog in GitHub. This is an **int
 
 ## When to use
 - A PRD exists and the PO wants the corresponding user stories created as GitHub Issues.
+- Incrementally reconciling GitHub tickets when PRD requirements change.
+- Ingesting product requirements without touching technical specs or code.
+
+## When NOT to use
+- Starting an engineering task or translating an issue into `SPEC.md` (use `/specify`).
+- Writing Python code or tests from acceptance criteria (use `/implement`).
+- Reviewing code diffs or commit quality (use `/code-review`).
+- Merging PRs or closing out completed issues (use `/ship`).
 
 ## Tool
 - **GitHub MCP server** — to list, create, and update issues and labels in the repository.
@@ -52,6 +60,14 @@ Match existing issues on `key`; treat a story as **Changed** only when the **`sr
 - **Drafts only.** The PO owns the content and is the one who publishes (by removing the `status:draft` label).
 - This skill **never** writes `SPEC.md` or code. Intent is born in GitHub (PO); its technical form is born in the repo (engineering) and owned there.
 - Acceptance criteria stay at product altitude; the engineering team translates them into `SPEC.md`.
+
+## Common Rationalizations
+| The excuse | The reality |
+|---|---|
+| "I'll create the issues and also update `SPEC.md`." | `prd-to-backlog` is strictly for PO issue management; engineering owns `SPEC.md` via `/specify`. |
+| "I should rewrite existing issues every time." | Recreating or editing unchanged issues causes notification spam and loses history. Always reconcile with `prd-sync` and `src-sha`. |
+| "I'll delete the removed issues from GitHub." | Never delete or close removed issues silently; leave them intact and report them to the PO for human decision. |
+| "The PRD doesn't have Given/When/Then, so I can't draft." | Be liberal on input: parse prose acceptance criteria and format them into Given/When/Then in the issue body. |
 
 ## Verification
 Before exiting this skill, you MUST verify the following:
