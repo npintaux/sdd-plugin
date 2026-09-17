@@ -1,19 +1,21 @@
 ---
 name: implement
-description: Implement individual acceptance criteria or rules from SPEC.md into object-oriented Python code using TDD, Rule ABC subclasses, and engine.py composition. Use when turning an acceptance criterion or rule from SPEC.md into code, adding rule classes, or building the decision engine ("/implement R2", "implement the next rule", "build US1's engine", "code this rule", "TDD this criterion"). Do not use for committing changes (use commit), reviewing code (use code-review), or creating specifications from issues (use specify).
+description: Implement individual acceptance criteria or rules from SPEC.md into object-oriented Python code using TDD, domain patterns (Rule ABCs, StateMachine, PipelineStage), and engine composition. Use when turning an acceptance criterion or rule from SPEC.md into code, adding rule classes, or building the decision engine ("/implement R2", "implement the next rule", "build US1's engine", "code this rule", "TDD this criterion"). Do not use for committing changes (use commit), reviewing code (use code-review), macro-architecture (use architect), delta archiving (use archive-spec), or creating specifications from issues (use specify).
 ---
 
 # /implement
 
-Turn **one** item of intent (an acceptance criterion in `SPEC.md`, itself derived from a GitHub Issue) into tested, object-oriented Python. The method is non-negotiable; the gates enforce it. **This skill writes and tests code — it does not commit, and it never advances to the next story on its own.**
+Turn **one** item of intent (an acceptance criterion in `SPEC.md` or a change delta, itself derived from a GitHub Issue) into tested, object-oriented Python. The method is non-negotiable; the gates enforce it. **This skill writes and tests code — it does not commit, and it never advances to the next story on its own.**
 
 ## When to use
-- A new or changed acceptance criterion exists in `SPEC.md`.
+- A new or changed acceptance criterion exists in `SPEC.md` or `specs/changes/<id>/spec.delta.md`.
 - You are starting a cycle, or adding/altering a single rule in the decision engine.
 - Writing test-driven code pinned to formal specification rules.
 
 ## When NOT to use
+- Designing macro cloud topology, choosing agentic patterns, or creating architecture.md (use `/architect`).
 - Starting from a raw GitHub issue or PRD before `SPEC.md` exists (use `/specify`).
+- Merging and archiving completed delta specifications into capability specs (use `/archive-spec`).
 - Staging and committing green changes with traceable commit messages (use `/commit`).
 - Advisory review of diffs and OO design before commit (use `/code-review`).
 - Opening PRs and merging completed issues (use `/ship`).

@@ -15,6 +15,8 @@ Close out **one issue**. `/commit` runs many times per issue (once per reviewed 
 - Closing out an issue via automated PR creation, CI check monitoring, squash-merging, and branch cleanup.
 
 ## When NOT to use
+- Designing macro system architecture or recording ADRs (use `/architect`).
+- Merging and archiving completed delta specifications into capability specs (use `/archive-spec`).
 - Staging and committing a single reviewed rule implementation (use `/commit`).
 - Actively writing unit tests or code for unfinished acceptance criteria (use `/implement`).
 - Starting a new issue or drafting `SPEC.md` updates (use `/specify`).

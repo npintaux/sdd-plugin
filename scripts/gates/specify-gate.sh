@@ -13,12 +13,20 @@ cwd="${1:-$PWD}"
 root="$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null)" || hook_allow "not a git repository"
 cd "$root" || hook_allow "cannot enter repo root"
 
-problems=()
+layout_md=".agents/conventions/code-layout.md"
+layout_env=".agents/conventions/code-layout.env"
 
-# 1. You must cut the issue branch from the default branch.
+# If this repo does not use SDD (no SPEC.md and no code-layout contract), fail open so
+# plugin authoring and non-SDD repositories are not blocked.
+if [[ ! -f "SPEC.md" && ! -f "$layout_md" && ! -f "$layout_env" ]]; then
+  hook_allow "non-SDD repository (no SPEC.md or code-layout conventions found)"
+fi
+
+
+# 1. You must cut the issue branch from the default branch or maestro integration branch.
 branch="$(git branch --show-current)"
-if [[ "$branch" != "main" && "$branch" != "master" ]]; then
-  problems+=("you are on '$branch'. /specify must cut the issue branch from 'main' — run 'git checkout main' first.")
+if [[ "$branch" != "main" && "$branch" != "master" && "$branch" != maestro/* ]]; then
+  problems+=("you are on '$branch'. /specify must cut the issue branch from 'main' or 'maestro/*' — run 'git checkout main' first.")
 fi
 
 # 2. No uncommitted TRACKED changes. Untracked files (e.g. the drafted SPEC.md that

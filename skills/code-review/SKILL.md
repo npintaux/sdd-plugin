@@ -13,9 +13,11 @@ A structured second pass over a change. Advisory by design: it raises issues and
 - Auditing object-oriented design, Rule ABC compliance, engine composition, and test adequacy.
 
 ## When NOT to use
+- Designing macro system architecture or recording ADRs (use `/architect`).
 - Enforcing deterministic pre-commit gates in hooks (automated gate's responsibility).
 - Writing or refactoring implementation code directly (use `/implement`).
 - Creating or editing the specification in `SPEC.md` (use `/specify`).
+- Merging and archiving completed delta specifications (use `/archive-spec`).
 - Staging and committing changes to git (use `/commit`).
 
 ## Procedure

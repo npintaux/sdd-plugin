@@ -36,18 +36,38 @@ elif [[ ! "$branch" =~ ^issue/[0-9]+-[a-z0-9-]+$ ]]; then
   problems+=("branch '$branch' does not match issue/<number>-<short-kebab-title>.")
 fi
 
-# --- 2. The behavior contract must exist -------------------------------------
-[[ -f "SPEC.md" ]] || problems+=("SPEC.md missing at the repo root — run /specify first.")
+# --- 2. The behavior contract must exist and be mechanically valid -----------
+# validate_spec.py exit codes: 0 = valid, 1 = genuinely invalid (BLOCK),
+# 2 = validator could not run (a bug/env problem — FAIL OPEN, never block real work).
+# A label + the target file/args are passed in; a rc of 1 becomes a problem, any
+# other non-zero (2, 127 "no python3", …) is reported to stderr and allowed.
+validate_or_warn() {
+  local label="$1"; shift
+  if ! command -v python3 >/dev/null 2>&1; then
+    echo "commit-gate: python3 unavailable; skipping $label validation (fail-open)." >&2
+    return
+  fi
+  local out rc
+  out="$(python3 "$HERE/../validate_spec.py" "$@" 2>&1)"; rc=$?
+  case "$rc" in
+    0) ;;
+    1) problems+=("$label integrity check failed: $out") ;;
+    *) echo "commit-gate: $label validator error (rc=$rc); allowing (fail-open): $out" >&2 ;;
+  esac
+}
 
-# --- 2b. SPEC.md conforms to the canonical structure (forced for reproducibility) --
-# The required sections are the H2 headings of SPEC.template.md (single source of
-# truth), so authors derive content into a FIXED shape rather than inventing layout.
-template="$HERE/../../skills/specify/templates/SPEC.template.md"
-if [[ -f "SPEC.md" && -f "$template" ]]; then
-  while IFS= read -r heading; do
-    grep -Fxq "$heading" SPEC.md \
-      || problems+=("SPEC.md is missing the required section '$heading' (the canonical structure in SPEC.template.md is mandatory).")
-  done < <(grep -E '^## ' "$template")
+if [[ -f "SPEC.md" ]]; then
+  validate_or_warn "SPEC.md" SPEC.md
+else
+  active_delta="$(find specs/changes -name 'spec.delta.md' 2>/dev/null | head -n1)"
+  cap_spec="$(find specs -name 'spec.md' ! -path '*/changes/*' ! -path '*/archive/*' 2>/dev/null | head -n1)"
+  if [[ -n "$active_delta" ]]; then
+    validate_or_warn "Delta spec" "$active_delta" --delta
+  elif [[ -n "$cap_spec" ]]; then
+    validate_or_warn "Capability spec" "$cap_spec"
+  else
+    problems+=("SPEC.md (or specs/**/spec.md / spec.delta.md) missing — run /specify first.")
+  fi
 fi
 
 # --- 3. The layout contract (prose + machine twin) must exist ----------------

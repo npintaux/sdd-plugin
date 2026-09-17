@@ -1,0 +1,119 @@
+{
+  "skill": "archive-spec",
+  "queries": [
+    {
+      "quadrant": "Q1_direct",
+      "query": "/archive-spec --change issue-42-filter",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "archive the delta spec for change issue-12-vip-rule",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "merge delta spec into the capability specification and archive it",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "sync specification by archiving change folder issue-99",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "run archive-spec on change issue-88-timeout",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "The new rules are tested and passing, let's merge the change delta into our main spec",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "We are done with this ticket, move the change folder into specs/archive and update SPEC.md",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "Can you promote the staged rules from our change branch into the capability contract?",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "Let's archive the applied proposal and splice its added rules into the living specification",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "Synchronize the change delta so the root spec reflects the newly implemented rules",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "Archive this email thread and move it to my Gmail archive folder",
+      "expect": "no_trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "Compress the logs directory into a tar.gz archive to save disk space",
+      "expect": "no_trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "Where is the National Archives located in Washington DC?",
+      "expect": "no_trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "How do I download historical snapshots from the Internet Archive Wayback Machine?",
+      "expect": "no_trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "/specify issue #124 to draft the formal rules in a new change folder",
+      "expect": "no_trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "implement rule R4 in Python with strict test-driven development",
+      "expect": "no_trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "commit the changes using conventional commit format with rule traceability",
+      "expect": "no_trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "audit this pull request diff for object-oriented design and docstrings",
+      "expect": "no_trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "design the system architecture and select 21 Gulli agentic patterns",
+      "expect": "no_trigger",
+      "split": "train"
+    }
+  ]
+}
