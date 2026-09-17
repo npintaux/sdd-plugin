@@ -1,0 +1,119 @@
+{
+  "skill": "architect",
+  "queries": [
+    {
+      "quadrant": "Q1_direct",
+      "query": "/architect",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "design system architecture for the order processing platform",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "create architecture.md and establish subsystem boundaries",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "record ADR for choosing between LangGraph and Google ADK",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q1_direct",
+      "query": "select agentic patterns for our autonomous customer support bot",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "We need to structure how the different services talk to each other and define the macro design",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "What computational pattern should we use for this multi-step approval workflow with human checks?",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "Help me map out our cloud components, databases, and safety guardrails before coding",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "Can we evaluate the trade-offs of using Firestore vs Cloud SQL and document the decision?",
+      "expect": "trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q2_colloquial",
+      "query": "Let's establish the architectural blueprint and service topology for our new backend",
+      "expect": "trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "Tell me about famous Greek architecture and the Parthenon columns",
+      "expect": "no_trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "Draw an architectural blueprint of a 3-bedroom house with an open kitchen",
+      "expect": "no_trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "Explain what a computer architect does at Intel or AMD",
+      "expect": "no_trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q3_near_miss",
+      "query": "Can you explain the difference between Gothic and Renaissance architecture?",
+      "expect": "no_trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "/specify issue #124: add rule for contractor travel reimbursement",
+      "expect": "no_trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "implement rule R3 using TDD and make the test pass",
+      "expect": "no_trigger",
+      "split": "train"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "archive the applied delta spec for change issue-45-filters",
+      "expect": "no_trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "commit this change with conventional commit message [R4] (#120)",
+      "expect": "no_trigger",
+      "split": "val"
+    },
+    {
+      "quadrant": "Q4_sibling_adjacent",
+      "query": "review this pull request diff for clean architecture violations and docstrings",
+      "expect": "no_trigger",
+      "split": "train"
+    }
+  ]
+}

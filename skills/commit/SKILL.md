@@ -14,6 +14,8 @@ Produce a traceable commit message and commit the change. The discipline: every 
 
 ## When NOT to use
 - Actively implementing or debugging rules before human review (use `/implement`).
+- Designing macro system architecture or recording ADRs (use `/architect`).
+- Merging and archiving completed delta specifications (use `/archive-spec`).
 - Opening a pull request, watching CI, or merging the whole issue (use `/ship`).
 - Translating issues into specifications before coding begins (use `/specify`).
 - Advisory review of code architecture and design (use `/code-review`).

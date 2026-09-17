@@ -13,7 +13,9 @@ Turn product intent (the PRD) into a drafted backlog in GitHub. This is an **int
 - Ingesting product requirements without touching technical specs or code.
 
 ## When NOT to use
+- Designing macro system architecture or recording ADRs (use `/architect`).
 - Starting an engineering task or translating an issue into `SPEC.md` (use `/specify`).
+- Merging and archiving completed delta specifications (use `/archive-spec`).
 - Writing Python code or tests from acceptance criteria (use `/implement`).
 - Reviewing code diffs or commit quality (use `/code-review`).
 - Merging PRs or closing out completed issues (use `/ship`).
